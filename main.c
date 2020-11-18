@@ -7,8 +7,10 @@
 #include <time.h>
 #include <ctype.h>
 
-#define STRINGS_COUNT   1000
+#define STRINGS_COUNT   1000000
 #define MAX_STRING_SIZE 100
+
+unsigned char strings[STRINGS_COUNT][MAX_STRING_SIZE];
 
 
 void GenerateRandomString(char* str, unsigned int max_size) {
@@ -188,7 +190,7 @@ int test_str_5(char  str_1[MAX_STRING_SIZE], char  str_2[MAX_STRING_SIZE]) {
 
 void SortStrings(char strings[][MAX_STRING_SIZE], int (* compareStringsFunction)(char * ,char *)) {
 
-    // быстрая сортировка двумерного массива строк
+   
     int k = 0;
     char  temp=0;
     int f = 1;
@@ -213,13 +215,15 @@ void SortStrings(char strings[][MAX_STRING_SIZE], int (* compareStringsFunction)
 }
 
 
+
+
 int main() {
     setlocale(LC_ALL, "Rus");
     printf("Сортировка в лексикографическом порядке с учетом регистра : 1\nСортировка в лексикографическом порядке без учета регистра: 2\nCортировка по возрастанию длины строки : 3\nСортировка в обратном лексикографическом порядке с учетом регистра : 4\nСортировка по убыванию длины строки : 5\n");
     char v_r;
     scanf_s("%c", &v_r);
     srand(time(NULL));//устанавливаю от времени 
-    unsigned char strings[STRINGS_COUNT][MAX_STRING_SIZE];
+    //unsigned char strings[STRINGS_COUNT][MAX_STRING_SIZE];
     int (*compare)(char*, char*);
     if (v_r == '1') {
         compare = test_str_1;
@@ -240,9 +244,9 @@ int main() {
         exit(1);
     }
     GenerateRandomStrings(strings);
-    PrintStrings(strings);
+   // PrintStrings(strings);
     SortStrings(strings, compare);
-    PrintStrings(strings);
+    //PrintStrings(strings);
 
     return 0;
 }
