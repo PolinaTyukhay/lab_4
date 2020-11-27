@@ -7,7 +7,7 @@
 #include <time.h>
 #include <ctype.h>
 
-#define STRINGS_COUNT   10
+#define STRINGS_COUNT   100000
 #define MAX_STRING_SIZE 100
 
 char name = '0';
@@ -68,6 +68,7 @@ void PrintStrings(char strings[][MAX_STRING_SIZE]) {
     }
 
 }
+
 
 //int test_str_1(char  str_1[MAX_STRING_SIZE] , char  str_2[MAX_STRING_SIZE]) {
 //    int kol_pr=0 ;
@@ -297,6 +298,7 @@ int test_str_5(char  str_1[MAX_STRING_SIZE], char  str_2[MAX_STRING_SIZE]) {
 
 
 }
+//пузырек 
 
 //void SortStrings(char strings[][MAX_STRING_SIZE], int (* compareStringsFunction)(char * ,char *)) {
 //
@@ -324,48 +326,53 @@ int test_str_5(char  str_1[MAX_STRING_SIZE], char  str_2[MAX_STRING_SIZE]) {
 //
 //}
 
-void qsort_t( int b, int e, int(*compareStringsFunction)(char*, char*))
+
+void qsort_t(int b, int e, int(*compareStringsFunction)(char*, char*))
 {
     int l = b, r = e;
-    int p = (l + r) / 2;
-    //char* temp;
-    char t =0;
-    char piv[MAX_STRING_SIZE];// Опорным элементом для примера возьмём средний
-    
+    int p = l;
+    char t = 0;
+    char piv[MAX_STRING_SIZE];// Опорным элементом для примера возьмём левый
+
     //strcpy_s(piv, MAX_STRING_SIZE, strings[p]);
     for (int k = 0; k < MAX_STRING_SIZE; k++) {
         piv[k] = strings[p][k];
     }
-    while (l <= r)
+    while (l < r)
     {
-       
-        while ((compareStringsFunction(strings[l], piv) < 0)&&(l<r)&&(l<STRINGS_COUNT-1)) {
 
-            l++;
-        }
-
-        while ((compareStringsFunction(strings[r], piv) > 0)&&(r>l)&&(r>0)){
+        while ((compareStringsFunction(strings[r], piv) >= 0) && (l < r)) {
             r--;
         }
-        if (l <= r) {
-            
-            for (int ii=0; ii < MAX_STRING_SIZE; ii++) {
-                t = strings[l][ii];
+        if (l != r) {
+            for (int ii = 0; ii < MAX_STRING_SIZE; ii++) {
                 strings[l][ii] = strings[r][ii];
-                strings[r][ii] = t;
             }
             l++;
+        }
+        while ((compareStringsFunction(strings[l], piv) <= 0) && (l < r)) {
+            l++;
+        }
+        if (l != r) {
+            for (int ii = 0; ii < MAX_STRING_SIZE; ii++) {
+                strings[r][ii] = strings[l][ii];
+            }
             r--;
         }
     }
-    if (b < r) {
-        qsort_t( b, r, compareStringsFunction);
+    for (int ii = 0; ii < MAX_STRING_SIZE; ii++) {
+        //t = strings[p][ii];
+        strings[l][ii] = piv[ii];
+        //strings[r][ii] = t;
     }
-    if (e > l) {
-        qsort_t(l, e, compareStringsFunction);
+    p = l;
+    if (b < p) {
+        qsort_t(b, p - 1, compareStringsFunction);
+    }
+    if (e > p) {
+        qsort_t(p + 1, e, compareStringsFunction);
     }
 }
-
 
 
 
@@ -396,11 +403,11 @@ int main() {
         exit(1);
     }
     GenerateRandomStrings(strings);
-    PrintStrings(strings);
+    //PrintStrings(strings);
     //SortStrings(strings, compare);
     qsort_t( 0,STRINGS_COUNT-1 , compare);
     printf("\n");
-    PrintStrings(strings);
-
+    //PrintStrings(strings);
+    printf("end\n");
     return 0;
 }
